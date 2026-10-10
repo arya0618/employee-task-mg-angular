@@ -1,0 +1,11 @@
+.page-content {
+  min-height: calc(100vh - 69px);
+  padding: 28px 32px;
+  background: #f8fafc;
+}
+
+@media (max-width: 600px) {
+  .page-content {
+    padding: 20px 16px;
+  }
+}
