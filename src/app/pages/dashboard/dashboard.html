@@ -1,1 +1,57 @@
-<p>dashboard works!</p>
+
+<section class="dashboard">
+  <div class="dashboard-header">
+    <div>
+      <h1>Dashboard</h1>
+      <p>Overview of your employees and tasks.</p>
+    </div>
+  </div>
+<!-- <p>Total Employees: {{ totalEmployees }}</p> -->
+
+  @if (loading) {
+    <p class="message">Loading dashboard data...</p>
+  }
+
+  @if (errorMessage) {
+    <p class="error-message">{{ errorMessage }}</p>
+  }
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon teal">👥</div>
+      <p>Total Employees</p>
+      <h2>{{ totalEmployees }}</h2>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon green">✓</div>
+      <p>Active Employees</p>
+      <h2>{{ activeEmployees }}</h2>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon purple">☷</div>
+      <p>Total Tasks</p>
+      <h2>{{ totalTasks }}</h2>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon orange">◷</div>
+      <p>Pending Tasks</p>
+      <h2>{{ pendingTasks }}</h2>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon blue">↻</div>
+      <p>Tasks In Progress</p>
+      <h2>{{ inProgressTasks }}</h2>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon green">✓</div>
+      <p>Completed Tasks</p>
+      <h2>{{ completedTasks }}</h2>
+    </div>
+  </div>
+
+</section>

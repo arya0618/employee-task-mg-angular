@@ -1,30 +1,39 @@
 
 <header class="navbar">
-  <a class="brand" routerLink="/">
+  <a
+    class="brand"
+    [routerLink]="auth.isLoggedIn() ? '/' : '/login'"
+  >
     <span class="brand-icon">EH</span>
     <span class="brand-title">EmployeeHub</span>
   </a>
 
-  <nav class="nav-links" aria-label="Main navigation">
-    <a
-      routerLink="/"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >
-      Dashboard
-    </a>
+  @if (auth.isLoggedIn()) {
+    <nav class="nav-links" aria-label="Main navigation">
+      <a
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Dashboard
+      </a>
 
-    <a routerLink="/employees" routerLinkActive="active">
-      Employees
-    </a>
+      <a routerLink="/employees" routerLinkActive="active">
+        Employees
+      </a>
 
-    <a routerLink="/tasks" routerLinkActive="active">
-      Tasks
-    </a>
-  </nav>
+      <a routerLink="/tasks" routerLinkActive="active">
+        Tasks
+      </a>
+    </nav>
 
-  <div class="nav-profile">
-    <span class="avatar">AD</span>
-    <span class="profile-name">Admin</span>
-  </div>
+    <div class="nav-profile">
+      <span class="avatar">Admin</span>
+      <!-- <span class="profile-name">Admin</span> -->
+
+      <button class="logout-button" type="button" (click)="logout()">
+        Logout
+      </button>
+    </div>
+  }
 </header>

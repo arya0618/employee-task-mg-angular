@@ -28,14 +28,14 @@
 }
 .brand-title {
   font-family: 'Comfortaa', cursive;
-  font-size: 1.8rem;
+  font-size: 1.9rem;
 }
 
 .brand-icon {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 10px;
   background: #7C3AED;
   color: #ffffff;
@@ -78,8 +78,8 @@
 .avatar {
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: 41px;
+  height: 41px;
   border-radius: 50%;
   background: #dbeafe;
   color: #7C3AED;
@@ -109,4 +109,18 @@
   .nav-links a {
     padding: 9px 12px;
   }
+}
+.logout-button {
+  padding: 9px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background: #f8fafc;
 }
