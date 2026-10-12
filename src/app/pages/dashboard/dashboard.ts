@@ -1,6 +1,7 @@
 
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Employee } from '../../models/employee';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,8 +12,9 @@ import { HttpClient } from '@angular/common/http';
 export class Dashboard implements OnInit {
   private http = inject(HttpClient);
   private cdr = inject(ChangeDetectorRef); // added beacuse count not showing on dashboard web page
-// spotlightEmployees: any[] = Employee[];
-  totalEmployees = 0;
+ spotlightEmployees: Employee[]=[];
+  
+ totalEmployees = 0;
   activeEmployees = 0;
   totalTasks = 0;
   pendingTasks = 0;
@@ -37,7 +39,10 @@ export class Dashboard implements OnInit {
           this.activeEmployees = response.users.length;
 
           console.log('Employee count:', this.totalEmployees);
-          this.loading=false
+          this.loading=false;
+           this.spotlightEmployees = response.users.slice(0, 3);
+
+           this.employeesLoaded = true;
             this.cdr.detectChanges();
         },
         error: (error) => {
@@ -53,33 +58,36 @@ export class Dashboard implements OnInit {
       });
   }
 
-  loadTasks(): void {
-    this.http.get<any>('https://dummyjson.com/todos?limit=0')
-      .subscribe({
-        next: (response) => {
-          const tasks = response.todos;
+loadTasks(): void {
+  this.http.get<any>('https://fooapi.com/api/todos')
+    .subscribe({
+      next: (response) => {
+        const tasks = response.data;
 
-          this.totalTasks = response.total;
-          this.completedTasks =
-            tasks.filter((task: any) => task.completed).length;
-          this.pendingTasks =
-            tasks.filter((task: any) => !task.completed).length;
+        this.totalTasks = response.data.length;
 
-          this.inProgressTasks = 4;
-         this.loading=false
-          console.log('Task count:', this.totalTasks);
+        this.completedTasks =
+          tasks.filter((task: any) => task.state === 'Completed').length;
 
-  this.cdr.detectChanges();
-        },
-        error: (error) => {
-          console.error('Task API error:', error);
-          this.errorMessage = 'Unable to load task data.';
-          this.tasksLoaded = true;
-          this.checkLoading();
-        },
-     
-      });
-  }
+        this.pendingTasks =
+          tasks.filter((task: any) => task.state === 'Pending').length;
+
+        this.inProgressTasks =
+          tasks.filter((task: any) => task.state === 'Working').length;
+        console.log("pending",this.pendingTasks)
+        this.loading = false;
+        console.log('Task count:', this.totalTasks);
+
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Task API error:', error);
+        this.errorMessage = 'Unable to load task data.';
+        this.tasksLoaded = true;
+        this.checkLoading();
+      },
+    });
+}
 
   checkLoading(): void {
     console.log("--> ",this.employeesLoaded)

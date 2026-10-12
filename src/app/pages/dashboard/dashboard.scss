@@ -33,7 +33,7 @@
 .stat-card {
   padding: 24px;
   background: #ffffff;
-  border: 1px solid #e5e7eb;
+  border: 1px solid  #7c3aed;
   border-radius: 12px;
   box-shadow: 0 2px 6px rgb(15 23 42 / 3%);
 }
@@ -87,7 +87,8 @@
 
 .message {
   color: green;
-  font-size: 15px;
+  font-size: 17px;
+  font-size: large;
 }
 
 .error-message {
@@ -108,5 +109,86 @@
 
   .stat-card {
     padding: 20px;
+  }
+}
+.spotlight-section {
+  margin-top: 28px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.section-header h2 {
+  margin: 0 0 6px;
+  font-size: 20px;
+  color: #1f2937;
+}
+
+.section-header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.view-all {
+  color: #0f766e;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.spotlight-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.spotlight-card {
+  background: #ffffff;
+  border: 1px solid  #7c3aed;
+  border-radius: 12px;
+  padding: 24px 16px;
+  text-align: center;
+}
+
+.employee-image {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 12px;
+}
+
+.spotlight-card h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  color: #1f2937;
+}
+
+.employee-email {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: #64748b;
+  overflow-wrap: anywhere;
+}
+
+.employee-company {
+  margin: 0;
+  font-size: 13px;
+  color:  #7c3aed;
+}
+
+@media (max-width: 768px) {
+  .spotlight-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-header {
+    align-items: flex-start;
   }
 }

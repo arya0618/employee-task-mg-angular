@@ -54,4 +54,35 @@
     </div>
   </div>
 
+  <!-- Employee Spotlight -->
+<section class="spotlight-section">
+  <div class="section-header">
+    <div>
+      <h2>Employee Spotlight</h2>
+      <p>Meet best of our employees.</p>
+    </div>
+  </div>
+
+@if (!employeesLoaded) {
+  <p class="message">Loading employees, please wait...</p>
+} @else {
+  <div class="spotlight-grid">
+    @for (employee of spotlightEmployees; track employee.id) {
+      <div class="spotlight-card">
+        <img
+          [src]="employee.image"
+          [alt]="employee.firstName + ' ' + employee.lastName"
+          class="employee-image"
+        />
+
+        <h3>{{ employee.firstName }} {{ employee.lastName }}</h3>
+        <p class="employee-email">{{ employee.email }}</p>
+        <p class="employee-company">
+          {{ employee.company.title }}
+        </p>
+      </div>
+    }
+  </div>
+}
+</section>
 </section>

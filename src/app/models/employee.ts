@@ -6,7 +6,9 @@ export interface Employee{
     gender: string;
     email: string;
     phone: string;
-    address:Address
+    address:Address;
+      company:EmpCompay
+      image:string
 }
 
 export interface  Address {
@@ -16,4 +18,11 @@ export interface  Address {
         stateCode: string;
         postalCode: number;
         country:string;
+      
+      }
+
+      export interface EmpCompay{
+        title:string
+        department:string
+        name:string
       }
