@@ -96,4 +96,25 @@ loadTasks(): void {
         
   this.cdr.detectChanges();
   }
+
+  get taskChartStyle(): string {
+  const total =
+    this.pendingTasks +
+    this.inProgressTasks +
+    this.completedTasks;
+
+  if (total === 0) {
+    return 'conic-gradient(#e5e7eb 0% 100%)';
+  }
+
+  const pending = (this.pendingTasks / total) * 100;
+  const inProgress =
+    (this.inProgressTasks / total) * 100;
+
+  return `conic-gradient(
+    #f59e0b 0% ${pending}%,
+    #3b82f6 ${pending}% ${pending + inProgress}%,
+    #10b981 ${pending + inProgress}% 100%
+  )`;
+}
 }

@@ -35,7 +35,7 @@
       <h2>{{ totalTasks }}</h2>
     </div>
 
-    <div class="stat-card">
+    <!-- <div class="stat-card">
       <div class="stat-icon orange">◷</div>
       <p>Pending Tasks</p>
       <h2>{{ pendingTasks }}</h2>
@@ -51,7 +51,7 @@
       <div class="stat-icon green">✓</div>
       <p>Completed Tasks</p>
       <h2>{{ completedTasks }}</h2>
-    </div>
+    </div> -->
   </div>
 
   <!-- Employee Spotlight -->
@@ -84,5 +84,52 @@
     }
   </div>
 }
+</section>
+
+
+   <!-- Task Status Pie Chart -->
+<section class="chart-section">
+  <div class="section-header">
+    <div>
+      <h2>Task Status Overview</h2>
+      <p>Distribution of tasks by status.</p>
+    </div>
+  </div>
+
+  @if (loading) {
+    <p class="message">Loading task data...</p>
+  } @else {
+    <div class="chart-card">
+      <div
+        class="pie-chart"
+        [style.background]="taskChartStyle"
+      >
+        <div class="chart-center">
+          <h3>{{ totalTasks }}</h3>
+          <span>Total Tasks</span>
+        </div>
+      </div>
+
+      <div class="chart-legend">
+        <div class="legend-item">
+          <span class="legend-dot pending-dot"></span>
+          <span>Pending</span>
+          <strong>{{ pendingTasks }}</strong>
+        </div>
+
+        <div class="legend-item">
+          <span class="legend-dot progress-dot"></span>
+          <span>In Progress</span>
+          <strong>{{ inProgressTasks }}</strong>
+        </div>
+
+        <div class="legend-item">
+          <span class="legend-dot completed-dot"></span>
+          <span>Completed</span>
+          <strong>{{ completedTasks }}</strong>
+        </div>
+      </div>
+    </div>
+  }
 </section>
 </section>

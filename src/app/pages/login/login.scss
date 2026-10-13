@@ -81,7 +81,7 @@ input {
 }
 
 input:focus {
-  border-color: #0f766e;
+  border-color: #600f72d3;
   box-shadow: 0 0 0 3px rgb(15 118 110 / 10%);
 }
 
@@ -102,7 +102,7 @@ button {
   padding: 13px;
   border: none;
   border-radius: 8px;
-  background: #0f766e;
+  background: #600f72d3;
   color: #ffffff;
   font-size: 14px;
   font-weight: 600;
@@ -110,7 +110,7 @@ button {
 }
 
 button:hover:not(:disabled) {
-  background: #115e59;
+  background: #600f72d3;
 }
 
 button:disabled {
