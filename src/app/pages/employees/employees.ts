@@ -1,46 +1,63 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { Router, RouterLink,ActivatedRoute  } from '@angular/router';
 import { Employee } from '../../models/employee';
 
 @Component({
   selector: 'app-employees',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './employees.html',
   styleUrl: './employees.scss'
 })
 export class Employees implements OnInit {
   private http = inject(HttpClient);
-
+  private router =inject(Router)
+private route = inject(ActivatedRoute);
   employees: any[] = [];
- // employees:Employee[]=[]
   searchText = '';
   selectedDepartment = '';
   departments: string[] = [];
-
+  employeeDetails: any ={}
+isDetailsPage = false;
   loading = true;
   errorMessage = '';
-  selectedEmployee: any = null;
 
   ngOnInit(): void {
-    this.loadEmployees();
+  //   const id = this.route.snapshot.paramMap.get('id');
+
+  // if (id) {
+  //   this.loadEmployeeDetails(id);
+  // } else {
+  //   this.loadEmployees();
+  // }
+
+  this.route.paramMap.subscribe(params => {
+    const id = params.get('id');
+
+    this.isDetailsPage = !!id;
+    this.employeeDetails = null;
+    this.errorMessage = '';
+
+    if (id) {
+      this.loadEmployeeDetails(id);
+    } else {
+      this.loadEmployees();
+    }
+  });
   }
 
+  // Load the initial 30 employees
   loadEmployees(): void {
-    this.http.get<any>('https://dummyjson.com/users?limit=0')
+    this.loading = true;
+    this.errorMessage = '';
+
+    this.http.get<any>('https://dummyjson.com/users?limit=30&skip=0')
       .subscribe({
         next: (response) => {
           this.employees = response.users;
-
-          this.departments = [
-            ...new Set(
-              this.employees.map(
-                (employee: any) => employee.company.department
-              )
-            )
-          ];
-console.log(this.employees)
+          this.setDepartments();
           this.loading = false;
         },
         error: (error) => {
@@ -50,29 +67,75 @@ console.log(this.employees)
         }
       });
   }
+  viewDetails(employee: any): void {
+    this.router.navigate(['/employee', employee.id]);
+  }
 
-  get filteredEmployees(): any[] {
-    return this.employees.filter((employee: any) => {
-      const name =
-        `${employee.firstName} ${employee.lastName}`.toLowerCase();
+  // Search employees using the API
+  searchEmployees(value: string): void {
+    this.searchText = value;
 
-      const matchesSearch =
-        name.includes(this.searchText.toLowerCase()) ||
-        employee.email.toLowerCase().includes(this.searchText.toLowerCase());
+    if (!value.trim()) {
+      this.loadEmployees();
+      return;
+    }
 
-      const matchesDepartment =
-        !this.selectedDepartment ||
-        employee.company.department === this.selectedDepartment;
+    this.loading = true;
+    this.errorMessage = '';
 
-      return matchesSearch && matchesDepartment;
+    this.http.get<any>(
+      `https://dummyjson.com/users/search?q=${encodeURIComponent(value)}`
+    ).subscribe({
+      next: (response) => {
+        this.employees = response.users;
+        this.setDepartments();
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Employee search error:', error);
+        this.errorMessage = 'Unable to search employees. Please try again.';
+        this.loading = false;
+      }
     });
   }
 
-  viewDetails(employee: any): void {
-    this.selectedEmployee = employee;
+  // Get department names for the filter
+  setDepartments(): void {
+    this.departments = [
+      ...new Set(
+        this.employees.map(
+          (employee: any) => employee.company.department
+        )
+      )
+    ];
   }
 
-  closeDetails(): void {
-    this.selectedEmployee = null;
+  // Filter the loaded or searched employees by department
+  get filteredEmployees(): any[] {
+    if (!this.selectedDepartment) {
+      return this.employees;
+    }
+
+    return this.employees.filter(
+      (employee: any) =>
+        employee.company.department === this.selectedDepartment
+    );
   }
+  loadEmployeeDetails(id: string): void {
+  this.loading = true;
+  this.errorMessage = '';
+
+  this.http.get<any>(`https://dummyjson.com/users/${id}`)
+    .subscribe({
+      next: (response) => {
+        this.employeeDetails = response;
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Employee details error:', error);
+        this.errorMessage = 'Unable to load employee details.';
+        this.loading = false;
+      }
+    });
+}
 }

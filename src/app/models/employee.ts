@@ -21,8 +21,8 @@ export interface  Address {
       
       }
 
-      export interface EmpCompay{
-        title:string
+ export interface EmpCompay{
+      
         department:string
         name:string
-      }
+}

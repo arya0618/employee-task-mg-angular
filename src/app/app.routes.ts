@@ -28,12 +28,15 @@ export const routes: Routes = [
   {
     path: '',
     component: Dashboard,
+    canActivate: [authGuard]    
+  },
+    {
+    path: 'employee/:id',
+    component: Employees,
     canActivate: [authGuard]
-
-    
   },
   {
-    path: 'employees',
+    path: 'employee',
     component: Employees,
     canActivate: [authGuard]
   },

@@ -1,133 +1,184 @@
-<section class="employees-page">
-  <div class="page-header">
-    <div>
-      <h1>Employees</h1>
-      <p>Manage and view employee information.</p>
+ @if (employeeDetails) {
+  <!-- Employee Details View -->
+  <section class="employees-page">
+    <div class="page-header">
+      <div>
+        <h1>Employee Details</h1>
+        <p>View complete employee information.</p>
+      </div>
+
+      <a routerLink="/employee" class="add-button">
+        ← Back to Employees
+      </a>
     </div>
 
-    <a routerLink="/employees/add" class="add-button">
-      + Add Employee
-    </a>
-  </div>
-
-  <!-- Search and Department Filter -->
-  <div class="filters">
-    <input
-      type="text"
-      placeholder="Search by name or email..."
-      [(ngModel)]="searchText"
-    />
-
-    <select [(ngModel)]="selectedDepartment">
-      <option value="">All Departments</option>
-
-      @for (department of departments; track department) {
-        <option [value]="department">{{ department }}</option>
-      }
-    </select>
-  </div>
-
-  <!-- Loading -->
-  @if (loading) {
-    <p class="message">Loading employees, please wait...</p>
-  }
-
-  <!-- Error -->
-  @if (errorMessage) {
-    <p class="error-message">{{ errorMessage }}</p>
-
-    <button class="retry-button" (click)="loadEmployees()">
-      Try Again
-    </button>
-  }
-
-  <!-- Employee Table -->
-  @if (!loading && !errorMessage) {
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Employee</th>
-            <th>Email</th>
-            <th>Department</th>
-            <th>Company</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          @for (employee of filteredEmployees; track employee.id) {
-            <tr>
-              <td>
-                <div class="employee-name">
-                  <img [src]="employee.image" [alt]="employee.firstName" />
-                  <span>
-                    {{ employee.firstName }} {{ employee.lastName }}
-                  </span>
-                </div>
-              </td>
-
-              <td>{{ employee.email }}</td>
-              <td>{{ employee.company.department }}</td>
-              <td>{{ employee.company.name }}</td>
-
-              <td>
-                <button
-                  class="details-button"
-                  (click)="viewDetails(employee)"
-                >
-                  View Details
-                </button>
-              </td>
-            </tr>
-          } @empty {
-            <tr>
-              <td colspan="5" class="empty-message">
-                No employees found.
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    </div>
-  }
-
-  <!-- Employee Details -->
-  @if (selectedEmployee) {
     <div class="details-card">
-      <button class="close-button" (click)="closeDetails()">
-        Close ✕
-      </button>
+      <div class="details-header">
+        <img
+          [src]="employeeDetails.image"
+          [alt]="employeeDetails.firstName"
+          class="details-image"
+        />
 
-      <h2>Employee Details</h2>
+        <div>
+          <h2>
+            {{ employeeDetails.firstName }}
+            {{ employeeDetails.lastName }}
+          </h2>
+          <p>{{ employeeDetails.company.name }}</p>
+          <p>{{ employeeDetails.company.department }}</p>
+        </div>
+      </div>
 
-      <img
-        [src]="selectedEmployee.image"
-        [alt]="selectedEmployee.firstName"
-        class="details-image"
+      <div class="details-grid">
+        <div>
+          <strong>Employee ID</strong>
+          <p>{{ employeeDetails.id }}</p>
+        </div>
+
+        <div>
+          <strong>Email</strong>
+          <p>{{ employeeDetails.email }}</p>
+        </div>
+
+        <div>
+          <strong>Phone</strong>
+          <p>{{ employeeDetails.phone }}</p>
+        </div>
+
+        <div>
+          <strong>Age</strong>
+          <p>{{ employeeDetails.age }}</p>
+        </div>
+
+        <div>
+          <strong>Gender</strong>
+          <p>{{ employeeDetails.gender }}</p>
+        </div>
+
+        <div>
+          <strong>Company</strong>
+          <p>{{ employeeDetails.company.name }}</p>
+        </div>
+
+        <div>
+          <strong>Department</strong>
+          <p>{{ employeeDetails.company.department }}</p>
+        </div>
+
+        <div>
+          <strong>Job Title</strong>
+          <p>{{ employeeDetails.company.title }}</p>
+        </div>
+
+        <div>
+          <strong>Address</strong>
+          <p>
+            {{ employeeDetails.address.address }},
+            {{ employeeDetails.address.city }},
+              {{ employeeDetails.address.state }},
+                {{ employeeDetails.address.country }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+} @else {
+  <!-- Employee List View -->
+  <section class="employees-page">
+    <div class="page-header">
+      <div>
+        <h1>Employees</h1>
+        <p>Manage and view employee information.</p>
+      </div>
+
+      <a routerLink="/employees/add" class="add-button">
+        + Add Employee
+      </a>
+    </div>
+
+    <!-- Search and Department Filter -->
+    <div class="filters">
+      <input
+        type="text"
+        placeholder="Search by name or email..."
+        [ngModel]="searchText"
+        (ngModelChange)="searchEmployees($event)"
       />
 
-      <p>
-        <strong>Name:</strong>
-        {{ selectedEmployee.firstName }} {{ selectedEmployee.lastName }}
-      </p>
+      <select [(ngModel)]="selectedDepartment">
+        <option value="">All Departments</option>
 
-      <p><strong>Email:</strong> {{ selectedEmployee.email }}</p>
-      <p><strong>Phone:</strong> {{ selectedEmployee.phone }}</p>
-      <p><strong>Age:</strong> {{ selectedEmployee.age }}</p>
-      <p><strong>Gender:</strong> {{ selectedEmployee.gender }}</p>
-      <p>
-        <strong>Department:</strong>
-        {{ selectedEmployee.company.department }}
-      </p>
-      <p>
-        <strong>Job Title:</strong>
-        {{ selectedEmployee.company.title }}
-      </p>
-      <p>
-        <strong>Company:</strong>
-        {{ selectedEmployee.company.name }}
-      </p>
+        @for (department of departments; track department) {
+          <option [value]="department">{{ department }}</option>
+        }
+      </select>
     </div>
-  }
-</section>
+
+    @if (loading) {
+      <p class="message">Loading employees, please wait...</p>
+    }
+
+    <!-- Error -->
+    @if (errorMessage) {
+      <p class="error-message">{{ errorMessage }}</p>
+
+      <button class="retry-button" (click)="loadEmployees()">
+        Try Again
+      </button>
+    }
+
+    @if (!loading && !errorMessage) {
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Email</th>
+              <th>Department</th>
+              <th>Company</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (employee of filteredEmployees; track employee.id) {
+              <tr>
+                <td>
+                  <div class="employee-name">
+                    <img
+                      [src]="employee.image"
+                      [alt]="employee.firstName"
+                    />
+                    <span>
+                      {{ employee.firstName }} {{ employee.lastName }}
+                    </span>
+                  </div>
+                </td>
+
+                <td>{{ employee.email }}</td>
+                <td>{{ employee.company.department }}</td>
+                <td>{{ employee.company.name }}</td>
+
+                <td>
+                  <button
+                    class="details-button"
+                    (click)="viewDetails(employee)"
+                  >
+                    View Details
+                  </button>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="5" class="empty-message">
+                  No employees found.
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+}
