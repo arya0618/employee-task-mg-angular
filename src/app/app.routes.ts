@@ -1,13 +1,12 @@
 
 import { Routes, CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
-
 import { Login } from './pages/login/login';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { Employees } from './pages/employees/employees';
 import { Tasks } from './pages/tasks/tasks';
-
 import { AuthService } from './services/auth.service';
+import { TaskAdd } from './pages/task-add/task-add';
 
 const authGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
@@ -43,6 +42,11 @@ export const routes: Routes = [
   {
     path: 'tasks',
     component: Tasks,
+    canActivate: [authGuard]
+  },
+   {
+    path: 'task/add',
+    component: TaskAdd,
     canActivate: [authGuard]
   },
   {

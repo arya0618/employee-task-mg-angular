@@ -1,0 +1,100 @@
+
+<section class="task-form-page">
+  <div class="page-header">
+    <div>
+      <h1>Create Task</h1>
+      <p>Add a new task to your task management system.</p>
+    </div>
+
+    <a routerLink="/task" class="back-button">
+      ← Back to Tasks
+    </a>
+  </div>
+
+  <div class="form-card">
+    @if (successMessage()) {
+      <div class="success-message">
+        {{ successMessage() }}
+      </div>
+
+      <button
+        type="button"
+        class="submit-button"
+        (click)="goToTasks()"
+      >
+        Go to Tasks
+      </button>
+    } @else {
+      <form [formGroup]="taskForm" (ngSubmit)="saveTask()">
+
+        <div class="form-group">
+          <label for="task">Task Title</label>
+
+          <input
+            id="task"
+            type="text"
+            formControlName="task"
+            placeholder="Enter task title"
+          />
+
+          @if (
+            taskForm.controls.task.invalid &&
+            taskForm.controls.task.touched
+          ) {
+            <p class="field-error">Task title is required.</p>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description</label>
+
+          <textarea
+            id="description"
+            formControlName="description"
+            placeholder="Enter task description"
+            rows="5"
+          ></textarea>
+
+          @if (
+            taskForm.controls.description.invalid &&
+            taskForm.controls.description.touched
+          ) {
+            <p class="field-error">Description is required.</p>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="status">Task Status</label>
+
+          <select id="status" formControlName="status">
+            <option value="pending">Pending</option>
+            <option value="in-progress">In Progress</option>
+            <option value="completed">Completed</option>
+          </select>
+
+          @if (
+            taskForm.controls.status.invalid &&
+            taskForm.controls.status.touched
+          ) {
+            <p class="field-error">Please select a task status.</p>
+          }
+        </div>
+
+        <div class="form-actions">
+          <a routerLink="/task" class="cancel-button">
+            Cancel
+          </a>
+
+          <button
+            type="submit"
+            class="submit-button"
+            [disabled]="taskForm.invalid"
+          >
+            Create Task
+          </button>
+        </div>
+
+      </form>
+    }
+  </div>
+</section>
