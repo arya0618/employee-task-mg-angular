@@ -32,7 +32,7 @@ export class Dashboard implements OnInit {
   }
 
   loadEmployees(): void {
-    this.http.get<any>('https://dummyjson.com/users?limit=0')
+    this.http.get<any>('https://dummyjson.com/users?limit=3&skip=3')
       .subscribe({
         next: (response) => {
           this.totalEmployees = response.total;
@@ -51,10 +51,6 @@ export class Dashboard implements OnInit {
           this.employeesLoaded = true;
           this.checkLoading();
         },
-        // complete: () => {
-        //   this.employeesLoaded = true;
-        //   this.checkLoading();
-        // }
       });
   }
 

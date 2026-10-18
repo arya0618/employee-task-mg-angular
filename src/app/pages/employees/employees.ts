@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink,ActivatedRoute  } from '@angular/router';
@@ -15,6 +15,7 @@ export class Employees implements OnInit {
   private http = inject(HttpClient);
   private router =inject(Router)
 private route = inject(ActivatedRoute);
+private cdr = inject(ChangeDetectorRef);
   employees: any[] = [];
   searchText = '';
   selectedDepartment = '';
@@ -58,7 +59,9 @@ isDetailsPage = false;
         next: (response) => {
           this.employees = response.users;
           this.setDepartments();
+          
           this.loading = false;
+            this.cdr.detectChanges();
         },
         error: (error) => {
           console.error('Employee API error:', error);
@@ -90,6 +93,7 @@ isDetailsPage = false;
         this.employees = response.users;
         this.setDepartments();
         this.loading = false;
+          this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Employee search error:', error);
@@ -121,21 +125,32 @@ isDetailsPage = false;
         employee.company.department === this.selectedDepartment
     );
   }
-  loadEmployeeDetails(id: string): void {
-  this.loading = true;
-  this.errorMessage = '';
 
-  this.http.get<any>(`https://dummyjson.com/users/${id}`)
-    .subscribe({
-      next: (response) => {
-        this.employeeDetails = response;
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Employee details error:', error);
-        this.errorMessage = 'Unable to load employee details.';
-        this.loading = false;
-      }
-    });
-}
+  loadEmployeeDetails(id: string): void {
+      this.loading = true;
+      this.errorMessage = '';
+
+      this.http.get<any>(`https://dummyjson.com/users/${id}`)
+        .subscribe({
+          next: (response) => {
+            console.log("loading :",this.loading)
+            this.employeeDetails = response;
+            this.loading = false;
+              this.cdr.detectChanges();
+          },
+          error: (error) => {
+            console.error('Employee details error:', error);
+            this.errorMessage = 'Unable to load employee details.';
+            this.loading = false;
+          }
+        });
+  }
+
+     retryEmployeeDetails(): void {
+      const id = this.route.snapshot.paramMap.get('id');
+
+        if (id) {
+        this.loadEmployeeDetails(id);
+        }
+    }
 }

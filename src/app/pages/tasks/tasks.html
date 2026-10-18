@@ -1,1 +1,85 @@
-<p>tasks works!</p>
+<section class="tasks-page">
+  <div class="page-header">
+    <div>
+      <h1>Tasks</h1>
+      <p>Manage and view all tasks.</p>
+    </div>
+  </div>
+
+
+  
+  <div class="filters">
+    <input
+      type="text"
+      placeholder="Search tasks..."
+      [(ngModel)]="searchText"
+    />
+
+    <select [(ngModel)]="selectedStatus">
+      <option value="">All Statuses</option>
+      <option value="pending">Pending</option>
+      <option value="working">Working</option>
+      <option value="completed">Completed</option>
+      <option value="unknown">Unknown</option>
+    </select>
+    <a routerLink="/employees/add" class="add-button">
+        + Add Task
+      </a>
+  </div>
+
+  @if (loading) {
+    <p class="message">Loading tasks, please wait...</p>
+  } @else if (errorMessage) {
+    <p class="error-message">{{ errorMessage }}</p>
+
+    <button class="retry-button" (click)="loadTasks()">
+      Try Again
+    </button>
+  } @else {
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Task ID</th>
+            <th>Task</th>
+            <th>Status</th>
+           
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (task of filteredTasks; track task.id) {
+            <tr>
+              <td>{{ getTaskId(task) }}</td>
+
+              <td class="task-title">
+                {{ getTaskTitle(task) }}
+              </td>
+
+              <td>
+                <span
+                  class="status-badge"
+                  [class.completed]="getStatus(task) === 'completed'"
+                  [class.pending]="getStatus(task) === 'pending'"
+                  [class.Working]="getStatus(task) === 'working'"
+                >
+                  {{ getStatus(task) === 'working'
+                    ? 'Working'
+                    : (getStatus(task) | titlecase) }}
+                </span>
+              </td>
+
+             
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="empty-message">
+                No tasks found.
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

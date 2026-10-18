@@ -22,7 +22,7 @@ export interface  Address {
       }
 
  export interface EmpCompay{
-      
+        title:string
         department:string
         name:string
 }
