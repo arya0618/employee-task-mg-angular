@@ -2,10 +2,11 @@ import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TaskService } from '../../services/tasks.service';
 import {TitleCasePipe }  from "@angular/common"
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-tasks',
   standalone: true,
-  imports: [FormsModule, TitleCasePipe],
+  imports: [FormsModule, TitleCasePipe,RouterLink],
   templateUrl: './tasks.html',
   styleUrl: './tasks.scss'
 })

@@ -17,19 +17,15 @@
         {{ successMessage() }}
       </div>
 
-      <button
-        type="button"
-        class="submit-button"
-        (click)="goToTasks()"
-      >
-        Go to Tasks
-      </button>
+      <h3>API Response</h3>
+      <pre>{{ apiResponse() | json }}</pre>
+
+    
     } @else {
       <form [formGroup]="taskForm" (ngSubmit)="saveTask()">
 
         <div class="form-group">
           <label for="task">Task Title</label>
-
           <input
             id="task"
             type="text"
@@ -47,7 +43,6 @@
 
         <div class="form-group">
           <label for="description">Description</label>
-
           <textarea
             id="description"
             formControlName="description"
@@ -65,35 +60,28 @@
 
         <div class="form-group">
           <label for="status">Task Status</label>
-
           <select id="status" formControlName="status">
             <option value="pending">Pending</option>
             <option value="in-progress">In Progress</option>
             <option value="completed">Completed</option>
           </select>
-
-          @if (
-            taskForm.controls.status.invalid &&
-            taskForm.controls.status.touched
-          ) {
-            <p class="field-error">Please select a task status.</p>
-          }
         </div>
 
+        @if (errorMessage()) {
+          <p class="error-message">{{ errorMessage() }}</p>
+        }
+
         <div class="form-actions">
-          <a routerLink="/task" class="cancel-button">
-            Cancel
-          </a>
+          <a routerLink="/task" class="cancel-button">Cancel</a>
 
           <button
             type="submit"
             class="submit-button"
-            [disabled]="taskForm.invalid"
+            [disabled]="taskForm.invalid || saving()"
           >
-            Create Task
+            {{ saving() ? 'Submitting...' : 'Create Task' }}
           </button>
         </div>
-
       </form>
     }
   </div>

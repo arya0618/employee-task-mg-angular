@@ -40,7 +40,7 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
-    path: 'tasks',
+    path: 'task',
     component: Tasks,
     canActivate: [authGuard]
   },
