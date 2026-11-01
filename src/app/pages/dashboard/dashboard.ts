@@ -1,7 +1,7 @@
 
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Employee } from '../../models/employee';
+import { EmployeeInterFace } from '../../models/employee';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,7 +12,7 @@ import { Employee } from '../../models/employee';
 export class Dashboard implements OnInit {
   private http = inject(HttpClient);
   private cdr = inject(ChangeDetectorRef); // added beacuse count not showing on dashboard web page
- spotlightEmployees: Employee[]=[];
+  spotlightEmployees: EmployeeInterFace[]=[];
   
  totalEmployees = 0;
   activeEmployees = 0;
@@ -21,9 +21,9 @@ export class Dashboard implements OnInit {
   inProgressTasks = 0;
   completedTasks = 0;
 
-  employeesLoaded = false;
-  tasksLoaded = false;
-  loading = true;
+  employeesLoaded = signal(false);
+  tasksLoaded = signal(false);
+  loading = signal(true);
   errorMessage = '';
 
   ngOnInit(): void {
@@ -39,16 +39,16 @@ export class Dashboard implements OnInit {
           this.activeEmployees = response.users.length;
 
           console.log('Employee count:', this.totalEmployees);
-          this.loading=false;
+          this.loading.set(false);
            this.spotlightEmployees = response.users.slice(0, 3);
 
-           this.employeesLoaded = true;
+           this.employeesLoaded.set(true);
             this.cdr.detectChanges();
         },
         error: (error) => {
           console.error('Employee API error:', error);
           this.errorMessage = 'Unable to load employee data.';
-          this.employeesLoaded = true;
+          this.employeesLoaded.set(true);
           this.checkLoading();
         },
       });
@@ -71,7 +71,7 @@ loadTasks(): void {
         this.inProgressTasks =
           tasks.filter((task: any) => task.state === 'Working').length;
         console.log("pending",this.pendingTasks)
-        this.loading = false;
+        this.loading.set(false);
         console.log('Task count:', this.totalTasks);
 
         this.cdr.detectChanges();
@@ -79,7 +79,7 @@ loadTasks(): void {
       error: (error) => {
         console.error('Task API error:', error);
         this.errorMessage = 'Unable to load task data.';
-        this.tasksLoaded = true;
+        this.tasksLoaded.set(true);
         this.checkLoading();
       },
     });
@@ -87,7 +87,7 @@ loadTasks(): void {
 
   checkLoading(): void {
     console.log("--> ",this.employeesLoaded)
-    this.loading = !(this.employeesLoaded && this.tasksLoaded);
+    this.loading.set(!(this.employeesLoaded() && this.tasksLoaded()));
         console.log("--===== ",this.loading)
         
   this.cdr.detectChanges();

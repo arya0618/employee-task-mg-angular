@@ -28,7 +28,7 @@ export class TaskAdd {
   apiResponse = signal<any | null>(null);
 
   taskForm = this.fb.group({
-    task: ['', Validators.required],
+    todo: ['', Validators.required],
     description: ['', Validators.required],
     status: ['pending', Validators.required]
   });
@@ -42,7 +42,7 @@ export class TaskAdd {
     const formValue = this.taskForm.getRawValue();
 
     const taskData: CreateTaskRequest = {
-      todo: formValue.task!.trim(),
+      todo: formValue.todo!.trim(),
       state: formValue.status!,
       closed: formValue.status === 'completed',
       userId: '1'

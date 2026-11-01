@@ -27,15 +27,15 @@
         <div class="form-group">
           <label for="task">Task Title</label>
           <input
-            id="task"
+            id="todo"
             type="text"
-            formControlName="task"
+            formControlName="todo"
             placeholder="Enter task title"
           />
 
           @if (
-            taskForm.controls.task.invalid &&
-            taskForm.controls.task.touched
+            taskForm.controls.todo.invalid &&
+            taskForm.controls.todo.touched
           ) {
             <p class="field-error">Task title is required.</p>
           }

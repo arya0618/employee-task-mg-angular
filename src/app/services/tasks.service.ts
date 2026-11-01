@@ -18,7 +18,7 @@ export class TaskService {
 
   addTask(task: CreateTaskRequest): Observable<any> {
     return this.http.post<any>(
-      apiURLs.TASK_FETCH_ALL,
+      apiURLs.TASK_ADD,
       JSON.stringify(task)
     );
   }

@@ -8,7 +8,7 @@
   </div>
 <!-- <p>Total Employees: {{ totalEmployees }}</p> -->
 
-  @if (loading) {
+  @if (loading()) {
     <p class="message">Loading dashboard data...</p>
   }
 
@@ -63,7 +63,7 @@
     </div>
   </div>
 
-@if (!employeesLoaded) {
+@if (!employeesLoaded()) {
   <p class="message">Loading employees, please wait...</p>
 } @else {
   <div class="spotlight-grid">
@@ -96,7 +96,7 @@
     </div>
   </div>
 
-  @if (loading) {
+  @if (loading()) {
     <p class="message">Loading task data...</p>
   } @else {
     <div class="chart-card">

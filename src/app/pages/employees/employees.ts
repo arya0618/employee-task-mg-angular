@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { EmployeeService } from '../../services/employee.service';
+import { EmployeeInterFace } from '../../models/employee';
 
 @Component({
   selector: 'app-employees',
@@ -16,11 +17,11 @@ export class Employees implements OnInit {
   private cdr = inject(ChangeDetectorRef);
   private employeeService = inject(EmployeeService);
 
-  employees: any[] = [];
+  employees: EmployeeInterFace[] = [];
   searchText = '';
   selectedDepartment = '';
   departments: string[] = [];
-  employeeDetails: any = {};
+  employeeDetails: EmployeeInterFace | null= null;
   isDetailsPage = false;
   loading = true;
   errorMessage = '';
@@ -56,6 +57,7 @@ export class Employees implements OnInit {
         console.error('Employee API error:', error);
         this.errorMessage = 'Unable to load employees. Please try again.';
         this.loading = false;
+         this.cdr.detectChanges();
       }
     });
   }
